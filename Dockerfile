@@ -8,7 +8,7 @@ RUN npm install -g http-server
 WORKDIR /app
 
 # Copy your HTML file into the container
-COPY index.html .
+COPY m5.html .
 
 # Expose the port http-server uses
 EXPOSE 8080
