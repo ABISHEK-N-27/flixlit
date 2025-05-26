@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FLIX IT 🎬</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #f0f0f0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .container {
+        background: rgba(0,0,0,0.65);
+        border-radius: 20px;
+        max-width: 600px;
+        width: 100%;
+        padding: 40px;
+        box-shadow: 0 0 25px rgba(255,255,255,0.15);
+        text-align: center;
+    }
+    h1 {
+        margin-bottom: 20px;
+        font-weight: 600;
+        font-size: 2.5rem;
+        text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    label {
+        display: block;
+        margin: 15px 0 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #ffd166;
+        text-shadow: 0 0 5px rgba(255,193,7,0.7);
+    }
+    select, input[type="range"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        font-size: 1rem;
+        margin-bottom: 20px;
+        background: #3a3a3a;
+        color: #f0f0f0;
+        box-shadow: inset 0 0 5px #000000a0;
+        transition: background 0.3s ease;
+    }
+    select:hover, input[type="range"]:hover {
+        background: #4b49a3;
+        box-shadow: inset 0 0 10px #6d6bfa;
+        cursor: pointer;
+    }
+    button {
+        background: #ffd166;
+        border: none;
+        padding: 15px 30px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #222;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 6px 15px #d4af37;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+        background: #e6b800;
+        transform: scale(1.05);
+    }
+    .recommendation {
+        margin-top: 30px;
+        background: #222;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: left;
+        box-shadow: 0 0 15px #ffd166aa;
+        animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .movie-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #ffe066;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px #fffacd;
+    }
+    .movie-details {
+        font-size: 1rem;
+        line-height: 1.4;
+        color: #ddd;
+        margin-bottom: 15px;
+    }
+    .movie-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+        color: #aaa;
+        font-size: 0.9rem;
+    }
+    .poster {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin: 15px 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .action-btn {
+        flex: 1;
+        padding: 10px;
+        font-size: 1rem;
+    }
+    .like-btn {
+        background: #06d6a0;
+        color: white;
+    }
+    .dislike-btn {
+        background: #ef476f;
+        color: white;
+    }
+    .try-again {
+        background: #4b49a3;
+        color: white;
+    }
+    .favorites {
+        margin-top: 30px;
+        background: rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+    }
+    .favorites h2 {
+        color: #ffd166;
+        margin-bottom: 10px;
+    }
+    .favorites-list {
+        text-align: left;
+    }
+    .favorite-item {
+        padding: 8px;
+        border-bottom: 1px solid #444;
+        display: flex;
+        justify-content: space-between;
+    }
+    .remove-btn {
+        background: transparent;
+        color: #ef476f;
+        border: none;
+        cursor: pointer;
+    }
+    .mood-indicator {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .mood-label {
+        font-size: 0.8rem;
+        color: #aaa;
+    }
+    .star-rating {
+        color: #ffd700;
+        font-size: 1.2rem;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>FLIX IT 🎬</h1>
+    <label for="genre">Select Genre:</label>
+    <select id="genre">
+        <option value="" disabled selected>Choose a genre</option>
+        <option value="Action">Action 🚀</option>
+        <option value="Comedy">Comedy 😂</option>
+        <option value="Drama">Drama 🎭</option>
+        <option value="Sci-Fi">Sci-Fi 👽</option>
+        <option value="Horror">Horror 👻</option>
+        <option value="Romance">Romance 💖</option>
+        <option value="Animation">Animation 🐭</option>
+        <option value="Thriller">Thriller 🔪</option>
+        <option value="Documentary">Documentary 📽</option>
+        <option value="Crime">Crime 🔫</option>
+        <option value="Adventure">Adventure 🗺</option>
+        <option value="Fantasy">Fantasy 🏰</option>
+        <option value="Biography">Biography 📖</option>
+        <option value="History">History ⏳</option>
+        <option value="War">War ⚔</option>
+        <option value="Mystery">Mystery 🕵️</option>
+        <option value="Music">Music 🎵</option>
+        <option value="Western">Western 🤠</option>
+        <option value="Family">Family 👨‍👩‍👧‍👦</option>
+    </select>
+
+    <label for="mood">Select Your Mood:</label>
+    <div class="mood-indicator">
+        <span class="mood-label">Chill 😌</span>
+        <span class="mood-label">Neutral 😐</span>
+        <span class="mood-label">Excited 🤩</span>
+    </div>
+    <input type="range" id="mood" min="1" max="5" value="3" />
+
+    <button id="recommendBtn">Recommend Movie 🍿</button>
+
+    <div class="recommendation" id="recommendation" style="display:none;">
+        <div class="movie-title" id="movieTitle"></div>
+        <div class="movie-meta">
+            <span id="movieYear"></span>
+            <span class="star-rating" id="movieRating"></span>
+            <span id="movieGenres"></span>
+        </div>
+        <img class="poster" id="moviePoster" src="" alt="Movie poster" onerror="this.src='https://via.placeholder.com/300x450?text=Poster+Not+Available'">
+        <div class="movie-details" id="movieDescription"></div>
+        <div class="action-buttons">
+            <button class="action-btn dislike-btn" id="dislikeBtn">👎 Dislike</button>
+            <button class="action-btn like-btn" id="likeBtn">❤️ Like</button>
+        </div>
+    </div>
+
+    <div class="favorites" id="favorites">
+        <h2>❤️ Your Favorites</h2>
+        <div class="favorites-list" id="favoritesList"></div>
+    </div>
+</div>
+
+<script>
+    // Movie database
+    const movies = [
+        { id: 1, title: "The Shawshank Redemption", genres: ["Drama"], year: 1994, rating: 9.3 },
+        { id: 2, title: "The Godfather", genres: ["Crime", "Drama"], year: 1972, rating: 9.2 },
+        { id: 3, title: "The Dark Knight", genres: ["Action", "Crime", "Drama"], year: 2008, rating: 9.0 },
+        { id: 4, title: "Pulp Fiction", genres: ["Crime", "Drama"], year: 1994, rating: 8.9 },
+        { id: 5, title: "Schindler's List", genres: ["Biography", "Drama", "History"], year: 1993, rating: 8.9 },
+        { id: 6, title: "The Lord of the Rings: The Return of the King", genres: ["Adventure", "Drama", "Fantasy"], year: 2003, rating: 8.9 },
+        { id: 7, title: "Fight Club", genres: ["Drama"], year: 1999, rating: 8.8 },
+        { id: 8, title: "Forrest Gump", genres: ["Drama", "Romance"], year: 1994, rating: 8.8 },
+        { id: 9, title: "Inception", genres: ["Action", "Adventure", "Sci-Fi"], year: 2010, rating: 8.8 },
+        { id: 10, title: "The Matrix", genres: ["Action", "Sci-Fi"], year: 1999, rating: 8.7 },
+        { id: 11, title: "Goodfellas", genres: ["Biography", "Crime", "Drama"], year: 1990, rating: 8.7 },
+        { id: 12, title: "Star Wars: Episode V - The Empire Strikes Back", genres: ["Action", "Adventure", "Fantasy"], year: 1980, rating: 8.7 },
+        { id: 13, title: "One Flew Over the Cuckoo's Nest", genres: ["Drama"], year: 1975, rating: 8.7 },
+        { id: 14, title: "Interstellar", genres: ["Adventure", "Drama", "Sci-Fi"], year: 2014, rating: 8.6 },
+        { id: 15, title: "Seven Samurai", genres: ["Action", "Adventure", "Drama"], year: 1954, rating: 8.6 },
+        { id: 16, title: "Se7en", genres: ["Crime", "Drama", "Mystery"], year: 1995, rating: 8.6 },
+        { id: 17, title: "The Silence of the Lambs", genres: ["Crime", "Drama", "Thriller"], year: 1991, rating: 8.6 },
+        { id: 18, title: "City of God", genres: ["Crime", "Drama"], year: 2002, rating: 8.6 },
+        { id: 19, title: "Saving Private Ryan", genres: ["Drama", "War"], year: 1998, rating: 8.6 },
+        { id: 20, title: "The Green Mile", genres: ["Crime", "Drama", "Fantasy"], year: 1999, rating: 8.6 },
+        { id: 21, title: "Life is Beautiful", genres: ["Comedy", "Drama", "Romance"], year: 1997, rating: 8.6 },
+        { id: 22, title: "The Usual Suspects", genres: ["Crime", "Drama", "Mystery"], year: 1995, rating: 8.5 },
+        { id: 23, title: "Léon: The Professional", genres: ["Action", "Crime", "Drama"], year: 1994, rating: 8.5 },
+        { id: 24, title: "Spirited Away", genres: ["Animation", "Adventure", "Family"], year: 2001, rating: 8.6 },
+        { id: 25, title: "The Lion King", genres: ["Animation", "Adventure", "Drama"], year: 1994, rating: 8.5 },
+        { id: 26, title: "The Prestige", genres: ["Drama", "Mystery", "Sci-Fi"], year: 2006, rating: 8.5 },
+        { id: 27, title: "Gladiator", genres: ["Action", "Adventure", "Drama"], year: 2000, rating: 8.5 },
+        { id: 28, title: "Memento", genres: ["Mystery", "Thriller"], year: 2000, rating: 8.4 },
+        { id: 29, title: "Alien", genres: ["Horror", "Sci-Fi"], year: 1979, rating: 8.4 },
+        { id: 30, title: "The Departed", genres: ["Crime", "Drama", "Thriller"], year: 2006, rating: 8.5 },
+        { id: 31, title: "Whiplash", genres: ["Drama", "Music"], year: 2014, rating: 8.5 },
+        { id: 32, title: "The Intouchables", genres: ["Biography", "Comedy", "Drama"], year: 2011, rating: 8.5 },
+        { id: 33, title: "Terminator 2: Judgment Day", genres: ["Action", "Sci-Fi"], year: 1991, rating: 8.5 },
+        { id: 34, title: "Back to the Future", genres: ["Adventure", "Comedy", "Sci-Fi"], year: 1985, rating: 8.5 },
+        { id: 35, title: "Psycho", genres: ["Horror", "Mystery", "Thriller"], year: 1960, rating: 8.5 },
+        { id: 36, title: "The Dark Knight Rises", genres: ["Action", "Thriller"], year: 2012, rating: 8.4 },
+        { id: 37, title: "Avengers: Infinity War", genres: ["Action", "Adventure", "Sci-Fi"], year: 2018, rating: 8.4 },
+        { id: 38, title: "WALL·E", genres: ["Animation", "Adventure", "Family"], year: 2008, rating: 8.4 },
+        { id: 39, title: "The Shining", genres: ["Drama", "Horror"], year: 1980, rating: 8.4 },
+        { id: 40, title: "Jurassic Park", genres: ["Action", "Adventure", "Sci-Fi"], year: 1993, rating: 8.1 },
+        { id: 41, title: "The Wizard of Oz", genres: ["Adventure", "Family", "Fantasy"], year: 1939, rating: 8.0 },
+        { id: 42, title: "Braveheart", genres: ["Biography", "Drama", "History"], year: 1995, rating: 8.3 },
+        { id: 43, title: "Toy Story", genres: ["Animation", "Adventure", "Comedy"], year: 1995, rating: 8.3 },
+        { id: 44, title: "The Social Network", genres: ["Biography", "Drama"], year: 2010, rating: 7.7 },
+        { id: 45, title: "Inglourious Basterds", genres: ["Adventure", "Drama", "War"], year: 2009, rating: 8.3 },
+        { id: 46, title: "Mad Max: Fury Road", genres: ["Action", "Adventure", "Sci-Fi"], year: 2015, rating: 8.1 },
+        { id: 47, title: "The Grand Budapest Hotel", genres: ["Adventure", "Comedy", "Drama"], year: 2014, rating: 8.1 },
+        { id: 48, title: "La La Land", genres: ["Comedy", "Drama", "Music"], year: 2016, rating: 8.0 },
+        { id: 49, title: "The Revenant", genres: ["Action", "Adventure", "Drama"], year: 2015, rating: 8.0 },
+        { id: 50, title: "Guardians of the Galaxy", genres: ["Action", "Adventure", "Comedy"], year: 2014, rating: 8.0 },
+        { id: 51, title: "Black Panther", genres: ["Action", "Adventure", "Sci-Fi"], year: 2018, rating: 7.3 },
+        { id: 52, title: "The Imitation Game", genres: ["Biography", "Drama", "Thriller"], year: 2014, rating: 8.0 },
+        { id: 53, title: "Deadpool", genres: ["Action", "Adventure", "Comedy"], year: 2016, rating: 8.0 },
+        { id: 54, title: "Parasite", genres: ["Comedy", "Drama", "Thriller"], year: 2019, rating: 8.6 },
+        { id: 55, title: "Joker", genres: ["Crime", "Drama", "Thriller"], year: 2019, rating: 8.4 },
+        { id: 56, title: "1917", genres: ["Drama", "War"], year: 2019, rating: 8.3 },
+        { id: 57, title: "Django Unchained", genres: ["Drama", "Western"], year: 2012, rating: 8.4 },
+        { id: 58, title: "Captain Marvel", genres: ["Action", "Adventure", "Sci-Fi"], year: 2019, rating: 6.9 },
+        { id: 59, title: "The Fault in Our Stars", genres: ["Drama", "Romance"], year: 2014, rating: 7.7 },
+        { id: 60, title: "Spider-Man: Into the Spider-Verse", genres: ["Animation", "Action", "Adventure"], year: 2018, rating: 8.4 },
+        { id: 61, title: "The Lion King (2019)", genres: ["Animation", "Adventure", "Drama"], year: 2019, rating: 6.9 },
+        { id: 62, title: "Finding Nemo", genres: ["Animation", "Adventure", "Comedy"], year: 2003, rating: 8.1 },
+        { id: 63, title: "The Incredibles", genres: ["Animation", "Action", "Adventure"], year: 2004, rating: 8.0 },
+        { id: 64, title: "Avengers: Endgame", genres: ["Action", "Adventure", "Drama"], year: 2019, rating: 8.4 },
+        { id: 65, title: "Frozen", genres: ["Animation", "Adventure", "Comedy"], year: 2013, rating: 7.5 },
+        { id: 66, title: "The Terminator", genres: ["Action", "Sci-Fi"], year: 1984, rating: 8.0 },
+        { id: 67, title: "Logan", genres: ["Action", "Drama", "Sci-Fi"], year: 2017, rating: 8.1 },
+        { id: 68, title: "The Hateful Eight", genres: ["Crime", "Drama", "Mystery"], year: 2015, rating: 7.8 },
+        { id: 69, title: "Black Swan", genres: ["Drama", "Thriller"], year: 2010, rating: 8.0 },
+        { id: 70, title: "The Big Short", genres: ["Biography", "Comedy", "Drama"], year: 2015, rating: 7.8 },
+        { id: 71, title: "Gravity", genres: ["Drama", "Sci-Fi", "Thriller"], year: 2013, rating: 7.7 },
+        { id: 72, title: "Dead Poets Society", genres: ["Comedy", "Drama"], year: 1989, rating: 8.1 },
+        { id: 73, title: "The Truman Show", genres: ["Comedy", "Drama", "Sci-Fi"], year: 1998, rating: 8.1 },
+        { id: 74, title: "Finding Dory", genres: ["Animation", "Adventure", "Comedy"], year: 2016, rating: 7.3 },
+        { id: 75, title: "Zootopia", genres: ["Animation", "Adventure", "Comedy"], year: 2016, rating: 8.0 },
+        { id: 76, title: "The Help", genres: ["Drama"], year: 2011, rating: 8.1 },
+        { id: 77, title: "The Wolf of Wall Street", genres: ["Biography", "Comedy", "Crime"], year: 2013, rating: 8.2 },
+        { id: 78, title: "Slumdog Millionaire", genres: ["Drama"], year: 2008, rating: 8.0 },
+        { id: 79, title: "Inside Out", genres: ["Animation", "Adventure", "Comedy"], year: 2015, rating: 8.2 },
+        { id: 80, title: "Wonder Woman", genres: ["Action", "Adventure", "Fantasy"], year: 2017, rating: 7.4 },
+        { id: 81, title: "Bohemian Rhapsody", genres: ["Biography", "Drama", "Music"], year: 2018, rating: 8.0 },
+        { id: 82, title: "Her", genres: ["Drama", "Romance", "Sci-Fi"], year: 2013, rating: 8.0 },
+        { id: 83, title: "The Martian", genres: ["Adventure", "Drama", "Sci-Fi"], year: 2015, rating: 8.0 },
+        { id: 84, title: "The Lighthouse", genres: ["Drama", "Fantasy", "Horror"], year: 2019, rating: 7.5 },
+        { id: 85, title: "Moonlight", genres: ["Drama"], year: 2016, rating: 7.4 },
+        { id: 86, title: "Get Out", genres: ["Horror", "Mystery", "Thriller"], year: 2017, rating: 7.7 },
+        { id: 87, title: "The Social Dilemma", genres: ["Documentary"], year: 2020, rating: 7.6 },
+        { id: 88, title: "1917", genres: ["Drama", "War"], year: 2019, rating: 8.3 },
+        { id: 89, title: "Knives Out", genres: ["Comedy", "Crime", "Drama"], year: 2019, rating: 7.9 },
+        { id: 90, title: "Coco", genres: ["Animation", "Adventure", "Comedy"], year: 2017, rating: 8.4 },
+        { id: 91, title: "Inside Man", genres: ["Crime", "Drama", "Thriller"], year: 2006, rating: 7.6 },
+        { id: 92, title: "Gone Girl", genres: ["Drama", "Mystery", "Thriller"], year: 2014, rating: 8.1 },
+        { id: 93, title: "The Breakfast Club", genres: ["Comedy", "Drama"], year: 1985, rating: 7.9 },
+        { id: 94, title: "The Pursuit of Happyness", genres: ["Biography", "Drama"], year: 2006, rating: 8.0 },
+        { id: 95, title: "The Shape of Water", genres: ["Adventure", "Drama", "Fantasy"], year: 2017, rating: 7.3 },
+        { id: 96, title: "The King's Speech", genres: ["Biography", "Drama", "History"], year: 2010, rating: 8.0 },
+        { id: 97, title: "Slender Man", genres: ["Horror"], year: 2018, rating: 3.0 },
+        { id: 98, title: "Inception", genres: ["Action", "Adventure", "Sci-Fi"], year: 2010, rating: 8.8 },
+        { id: 99, title: "No Country for Old Men", genres: ["Crime", "Drama", "Thriller"], year: 2007, rating: 8.1 },
+        { id: 100, title: "Interstellar", genres: ["Adventure", "Drama", "Sci-Fi"], year: 2014, rating: 8.6 }
+    ];
+
+    // Add poster URLs to movies
+    movies.forEach(movie => {
+        movie.poster = `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${getMoviePosterPath(movie.title)}`;
+    });
+
+    function getMoviePosterPath(title) {
+        // This is a simplified version - in a real app you'd use TMDB API
+        const posterMap = {
+            "The Shawshank Redemption": "9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg",
+            "The Godfather": "3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+            "The Dark Knight": "qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+            // Add more mappings as needed
+        };
+        return posterMap[title] || "null";
+    }
+
+    // DOM Elements
+    const recommendBtn = document.getElementById('recommendBtn');
+    const genreSelect = document.getElementById('genre');
+    const moodInput = document.getElementById('mood');
+    const recommendationDiv = document.getElementById('recommendation');
+    const movieTitleDiv = document.getElementById('movieTitle');
+    const movieYearSpan = document.getElementById('movieYear');
+    const movieRatingSpan = document.getElementById('movieRating');
+    const movieGenresSpan = document.getElementById('movieGenres');
+    const moviePosterImg = document.getElementById('moviePoster');
+    const movieDetailsDiv = document.getElementById('movieDescription');
+    const likeBtn = document.getElementById('likeBtn');
+    const dislikeBtn = document.getElementById('dislikeBtn');
+    const favoritesDiv = document.getElementById('favorites');
+    const favoritesList = document.getElementById('favoritesList');
+
+    // State
+    let currentRecommendation = null;
+    let favorites = JSON.parse(localStorage.getItem('flixit_favorites')) || [];
+    let recommendedHistory = [];
+
+    // Initialize
+    function updateFavoritesDisplay() {
+        if (favorites.length > 0) {
+            favoritesDiv.style.display = 'block';
+            favoritesList.innerHTML = favorites.map(movie => `
+                <div class="favorite-item">
+                    <span>${movie.title} (${movie.year})</span>
+                    <button class="remove-btn" data-id="${movie.id}">✕</button>
+                </div>
+            `).join('');
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.getAttribute('data-id'));
+                    favorites = favorites.filter(m => m.id !== id);
+                    localStorage.setItem('flixit_favorites', JSON.stringify(favorites));
+                    updateFavoritesDisplay();
+                });
+            });
+        } else {
+            favoritesDiv.style.display = 'none';
+        }
+    }
+
+    // Show initial favorites if any
+    updateFavoritesDisplay();
+
+    // Recommendation logic
+    function recommendMovie() {
+        const selectedGenre = genreSelect.value;
+        const userMood = parseInt(moodInput.value, 10);
+
+        if (!selectedGenre) {
+            alert('Please select a genre!');
+            return;
+        }
+
+        // Filter movies by selected genre
+        let genreMovies = movies.filter(movie => 
+            movie.genres.some(genre => genre.toLowerCase() === selectedGenre.toLowerCase())
+        );
+
+        // If no movies found for exact genre match, try partial match
+        if (genreMovies.length === 0) {
+            genreMovies = movies.filter(movie => 
+                movie.genres.some(genre => 
+                    genre.toLowerCase().includes(selectedGenre.toLowerCase()))
+            );
+        }
+
+        if (genreMovies.length === 0) {
+            movieTitleDiv.textContent = "No movies found for this genre.";
+            movieDetailsDiv.textContent = "";
+            recommendationDiv.style.display = "block";
+            return;
+        }
+
+        // Filter out already recommended movies
+        const availableMovies = genreMovies.filter(movie => 
+            !recommendedHistory.includes(movie.id)
+        );
+
+        // If we've recommended all movies, reset history
+        const candidates = availableMovies.length > 0 ? availableMovies : genreMovies;
+        if (availableMovies.length === 0) {
+            recommendedHistory = [];
+        }
+
+        // Calculate mood score (higher rating = more "exciting")
+        const moodAdjustedMovies = candidates.map(movie => {
+            const moodScore = Math.min(5, Math.max(1, Math.round(movie.rating - 6)));
+            return {
+                ...movie,
+                moodScore,
+                moodDistance: Math.abs(userMood - moodScore)
+            };
+        });
+
+        // Sort by closest mood match, then by rating
+        moodAdjustedMovies.sort((a, b) => {
+            if (a.moodDistance !== b.moodDistance) {
+                return a.moodDistance - b.moodDistance;
+            }
+            return b.rating - a.rating;
+        });
+
+        // Pick top 3 closest matches and choose randomly
+        const topMatches = moodAdjustedMovies.slice(0, 3);
+        const randomIndex = Math.floor(Math.random() * topMatches.length);
+        currentRecommendation = topMatches[randomIndex];
+
+        // Add to recommendation history
+        recommendedHistory.push(currentRecommendation.id);
+
+        // Update UI
+        movieTitleDiv.textContent = currentRecommendation.title;
+        movieYearSpan.textContent = currentRecommendation.year;
+        movieRatingSpan.textContent = '★'.repeat(Math.round(currentRecommendation.rating / 2)) + 
+                                   ` (${currentRecommendation.rating}/10)`;
+        movieGenresSpan.textContent = currentRecommendation.genres.join(", ");
+        moviePosterImg.src = currentRecommendation.poster;
+        moviePosterImg.alt = `${currentRecommendation.title} poster`;
+        movieDetailsDiv.textContent = `A ${currentRecommendation.year} ${currentRecommendation.genres[0].toLowerCase()} film rated ${currentRecommendation.rating}/10.`;
+        recommendationDiv.style.display = "block";
+    }
+
+    // Like/dislike functionality
+    likeBtn.addEventListener('click', () => {
+        if (currentRecommendation) {
+            // Check if already in favorites
+            if (!favorites.some(m => m.id === currentRecommendation.id)) {
+                favorites.push(currentRecommendation);
+                localStorage.setItem('flixit_favorites', JSON.stringify(favorites));
+                updateFavoritesDisplay();
+                alert(`Added ${currentRecommendation.title} to favorites!`);
+            } else {
+                alert('This movie is already in your favorites!');
+            }
+            recommendMovie(); // Get new recommendation
+        }
+    });
+
+    dislikeBtn.addEventListener('click', () => {
+        if (currentRecommendation) {
+            alert(`We'll avoid suggesting similar to ${currentRecommendation.title}`);
+            recommendMovie(); // Get new recommendation immediately
+        }
+    });
+
+    // Initial recommendation
+    recommendBtn.addEventListener('click', recommendMovie);
+</script>
+</body>
+</html>
