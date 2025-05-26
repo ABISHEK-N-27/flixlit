@@ -11,7 +11,7 @@ WORKDIR /app
 COPY m5.html .
 
 # Expose the port http-server uses
-EXPOSE 8080
+EXPOSE 8088
 
 # Command to run the server
-CMD ["http-server", "-p", "8080"]
+CMD ["http-server", "-p", "8088"]
